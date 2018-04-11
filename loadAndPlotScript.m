@@ -1,8 +1,8 @@
 
 %% Load the results of kilosort. 
 % This uses a function in the github/cortex-lab/spikes repository.
-sp = loadKSdir('.');
-sp
+sp = loadKSdir('.') % assumes your current directory has the data in it, if not then replace the directory
+
 % unwhiten all the templates
 tempsUnW = zeros(size(sp.temps));
 for t = 1:size(sp.temps,1)
