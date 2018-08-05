@@ -1,10 +1,14 @@
 
 
-%%
+function [downSampGridAlign, downSampGridStag] = downSampMatrix(yOffset, xOffset, makePlots)
+% function [downSampGridAlign, downSampGridStag] = downSampMatrix(yOffset, xOffset, makePlots)
+%
+% Example: 
+% >> yOffset = 5; 
+% >> xOffset = 5; 
+% >> makePlots = true;
+% >> [dsAlign, dsStag] = downSampMatrix(yOffset, xOffset, makePlots);
 
-yOffset = 5; 
-xOffset = 5; 
-makePlots = true;
 
 nSitesIncl = 12;
 siteSp = 6; 
@@ -22,29 +26,29 @@ np2originsYstag = np2originsYstag(1:nSitesIncl);
 np2originsYalign = np2originsYalign(1:nSitesIncl);
 np2originsX = np2originsX(1:nSitesIncl);
 
-upSampGridStag = zeros(upSampSize); 
+downSampGridStag = zeros(upSampSize); 
 
 for q = 1:numel(np2originsX)
-    upSampGridStag(np2originsX(q)+[0:np2siteSize(1)-1]+1, ...
+    downSampGridStag(np2originsX(q)+[0:np2siteSize(1)-1]+1, ...
         np2originsYstag(q)+[0:np2siteSize(2)-1]+1) = q;
 end
 
-upSampGridAlign = zeros(upSampSize); 
+downSampGridAlign = zeros(upSampSize); 
 
 for q = 1:numel(np2originsX)
-    upSampGridAlign(np2originsX(q)+[0:np2siteSize(1)-1]+1, ...
+    downSampGridAlign(np2originsX(q)+[0:np2siteSize(1)-1]+1, ...
         np2originsYalign(q)+[0:np2siteSize(2)-1]+1) = q;
 end
 
 if makePlots
 figure; 
 subplot(1,2,1);
-imagesc(upSampGridStag)
+imagesc(downSampGridStag)
 axis image;
 set(gca, 'YDir', 'normal');
 
 subplot(1,2,2);
-imagesc(upSampGridAlign)
+imagesc(downSampGridAlign)
 axis image;
 set(gca, 'YDir', 'normal');
 
