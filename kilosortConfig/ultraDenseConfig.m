@@ -5,8 +5,8 @@ ops.showfigures         = 1; % whether to plot figures during optimization
 		
 ops.datatype            = 'bin';  % binary ('dat', 'bin') or 'openEphys'		
 ops.fbinary             = 'J:\kampff\co1\amplifier2017-02-08T14_34_33.bin'; % will be created for 'openEphys'		
-ops.fproc               = 'J:\kampff\co1\temp_wh.dat'; % residual from RAM of preprocessed data		
-ops.root                = 'J:\kampff\co1\'; % 'openEphys' only: where raw files are		
+ops.fproc               = 'J:\kampff\tempDir\temp_wh.dat'; % residual from RAM of preprocessed data		
+ops.root                = 'J:\kampff\tempDir\'; % 'openEphys' only: where raw files are		
 		
 ops.fs                  = 20000;        % sampling rate		(omit if already in chanMap file)
 ops.NchanTOT            = 256;           % total number of channels (omit if already in chanMap file)
@@ -21,13 +21,13 @@ ops.nSkipCov            = 1; % compute whitening matrix from every N-th batch (1
 ops.whiteningRange      = 32; % how many channels to whiten together (Inf for whole probe whitening, should be fine if Nchan<=32)		
 		
 % define the channel map as a filename (string) or simply an array		
-ops.chanMap             = 'J:\kampff\co1\ultraDenseChanMap.mat'; % make this file using createChannelMapFile.m		
+ops.chanMap             = 'C:\Users\Nick\Documents\github\ultraDenseWaveforms\kilosortConfig\ultraDenseChanMap.mat'; % make this file using createChannelMapFile.m		
 ops.criterionNoiseChannels = 0.2; % fraction of "noise" templates allowed to span all channel groups (see createChannelMapFile for more info). 		
 % ops.chanMap = 1:ops.Nchan; % treated as linear probe if a chanMap file		
 		
 % other options for controlling the model and optimization		
 ops.Nrank               = 3;    % matrix rank of spike template model (3)		
-ops.nfullpasses         = 6;    % number of complete passes through data during optimization (6)		
+ops.nfullpasses         = 12;    % number of complete passes through data during optimization (6)		
 ops.maxFR               = 20000;  % maximum number of spikes to extract per batch (20000)		
 ops.fshigh              = 300;   % frequency for high pass filtering		
 % ops.fslow             = 2000;   % frequency for low pass filtering (optional)
