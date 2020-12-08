@@ -1,2 +1,4 @@
 # ultraDenseWaveforms
-Analysis of Kampff lab ultra-dense array recordings
+Analysis of ultra-dense array recordings
+
+Contributors: Nick Steinmetz, Zhiwen Ye, Susu Chen
