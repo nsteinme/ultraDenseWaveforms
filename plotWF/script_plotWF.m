@@ -171,27 +171,27 @@ title(sprintf('pk-pk amplitude = %.1f uV', max(posPk(:)-negPk(:))))
 ax1.YDir = 'normal';
 axis off
 
-% ax2 = subplot(1, nsp, 2);
-% cm = parula(200); cm = cm(end:-1:1,:); cm(1,:) = [0.4 0.4 0.4]; 
-% imagesc(xx(1,:), yy(:,1), negLat');
-% axis image
-% colormap(ax2, cm);
-% ax2.YDir = 'normal';
-% caxis([min(negLat(:))-1 max(negLat(:))+1]);
-% axis off;
-% title('latency to negative peak'); 
-% 
-% ax3 = subplot(1, nsp, 3);
-% imagesc(xx(1,:), yy(:,1), posLat');
-% axis image
-% colormap(ax3, cm);
-% ax3.YDir = 'normal';
-% caxis([min(posLat(:))-1 max(posLat(:))+1]);
-% axis off;
-% title('latency to positive peak'); 
+ax2 = subplot(1, nsp, 2);
+cm = parula(200); cm = cm(end:-1:1,:); cm(1,:) = [0.4 0.4 0.4]; 
+imagesc(xx(1,:), yy(:,1), negLat');
+axis image
+colormap(ax2, cm);
+ax2.YDir = 'normal';
+caxis([min(negLat(:))-1 max(negLat(:))+1]);
+axis off;
+title('latency to negative peak'); 
+
+ax3 = subplot(1, nsp, 3);
+imagesc(xx(1,:), yy(:,1), posLat');
+axis image
+colormap(ax3, cm);
+ax3.YDir = 'normal';
+caxis([min(posLat(:))-1 max(posLat(:))+1]);
+axis off;
+title('latency to positive peak'); 
 
 
-ax4 = subplot(1,nsp,2); 
+ax4 = subplot(1,nsp,4); 
 
 im = imagesc(xx(1,:), yy(:,1), wfUp(:,:,90)');
 caxis(cax); 
