@@ -43,8 +43,8 @@ clu = sp.clu(incl);
 
 cids = unique(clu); 
 
-inclCID = [cids(1) 26]; 
-
+% inclCID = [cids(1) 26]; 
+inclCID = cids;
 nCID = numel(inclCID);
 inclClu = ismember(clu, inclCID); 
 
@@ -104,8 +104,8 @@ for u = 1:size(mnSub,1)
 end
 
 %% compute stuff for a neuron
-
-q = 2; 
+% 8, 15
+q = 24; 
 
 xc = unique(sp.xcoords); yc = unique(sp.ycoords); 
 upX = xc(1):upsampRes:xc(end);
@@ -126,10 +126,11 @@ end
 posLat(posPk<max(posPk(:))/5) = NaN;
 [negPk, negLat] = min(wfUp, [], 3); 
 negLat(negPk>min(negPk(:))/5) = NaN;
-absPk = posPk; absPk(negPk<-posPk) = negPk(negPk<-posPk);
+% absPk = posPk; absPk(negPk<-posPk) = negPk(negPk<-posPk);
+absPk = negPk;
 
 
-%% plots
+% plots
 
 tScale = 4e3; yScale = 0.05;
 
@@ -145,9 +146,9 @@ tScale = 4e3; yScale = 0.05;
 % different timepoints, different shades of red for negative deflections at
 % different timepoints
 
-nsp = 2;  
+nsp = 5;  
 
-f = figure; 
+f = figure; f.Position = [ 1000         415        1414         923];
 
 ax1 = subplot(1, nsp, 1); 
 
@@ -204,3 +205,96 @@ updateIm = @(x, dat, tstart)set(x, 'CData', dat(:,:,max(1,ceil(mod(etime(clock, 
 tim = timer('ExecutionMode', 'fixedSpacing', 'Period', 1/30, ...
     'TimerFcn', 'updateIm(im, wfUp(:,:,plotSamps), t1)'); 
 start(tim); 
+
+
+ax5 = subplot(1, nsp, 5); 
+im2 = imagesc(reshape(thisWF(:,90), 8, 48)'); 
+caxis(cax); 
+axis image; 
+ax5.YDir = 'normal'; 
+axis off; 
+t1 = clock; 
+updateIm2 = @(x, dat, tstart)set(x, 'CData', dat(:,:,max(1,ceil(mod(etime(clock, tstart)/5,1)*size(dat,3))))'); 
+tim2 = timer('ExecutionMode', 'fixedSpacing', 'Period', 1/30, ...
+    'TimerFcn', 'updateIm(im2, wfR(:,:,plotSamps), t1)'); 
+start(tim2); 
+
+
+%% test waveform shifting
+
+addpath('C:\Users\nicks\Dropbox\code\analysis\npultra_shiftwf')
+nsp = 7;
+
+tic; wfS = shiftWF(thisWF,1); toc;
+wfSR = permute(reshape(wfS', size(thisWF,2), 8, 48), [2 3 1]);
+
+plotSamp = 90;
+
+ figure ;
+ subplot(1,nsp,1);
+ imagesc(wfR(:,:,plotSamp)'); 
+ axis image; caxis(cax); axis off; colormap(colormap_RedWhiteBlue)
+ set(gca, 'YDir', 'normal');
+ 
+ subplot(1,nsp,2); hold on;
+ 
+ for ch = 1:size(thisWF, 1)
+    onewf = thisWF(ch,plotSamps); 
+    
+    plot(sp.xcoords(ch)+wfT(plotSamps)*tScale, ...
+        sp.ycoords(ch)+thisWF(ch,plotSamps)*yScale, ...
+        'k'); 
+ end
+axis image; axis off;
+ 
+subplot(1,nsp,3);
+imagesc(wfSR(:,:,plotSamp)'); 
+ axis image; caxis(cax); axis off; colormap(colormap_RedWhiteBlue)
+ set(gca, 'YDir', 'normal');
+ 
+ subplot(1,nsp,4); hold on;
+ 
+ for ch = 1:size(thisWF, 1)
+    onewf = wfS(ch,plotSamps); 
+    
+    plot(sp.xcoords(ch)+wfT(plotSamps)*tScale, ...
+        sp.ycoords(ch)+thisWF(ch,plotSamps)*yScale, ...
+        'k'); 
+ end
+axis image; axis off;
+
+subplot(1, nsp, 5:7); 
+xp = 1; yp = 36;
+plot(squeeze(wfR(xp,yp,:)), '.-')
+hold on;
+plot(squeeze(wfSR(xp,yp,:)), '.-')
+xlim([plotSamps(1) plotSamps(end)])
+
+
+%%
+
+idx = 1; plotSamp = plotSamps(idx);
+
+figure; 
+
+subplot(1,2,1);
+    im1= imagesc(wfR(:,:,plotSamp)'); 
+ axis image; caxis(cax); axis off; colormap(colormap_RedWhiteBlue)
+ set(gca, 'YDir', 'normal');
+
+ subplot(1,2,2);
+im2 = imagesc(wfSR(:,:,plotSamp)'); 
+ axis image; caxis(cax); axis off; colormap(colormap_RedWhiteBlue)
+ set(gca, 'YDir', 'normal');
+ 
+while 1
+    
+    im1.CData = wfR(:,:,plotSamp)';
+    im2.CData = wfSR(:,:,plotSamp)';
+idx = idx+1; 
+if idx>numel(plotSamps); idx = 1; end
+plotSamp = plotSamps(idx);
+
+drawnow;
+pause(1/7)
+end
