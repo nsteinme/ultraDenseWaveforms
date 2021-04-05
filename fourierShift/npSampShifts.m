@@ -1,6 +1,8 @@
 
 
 function sampShifts = npSampShifts(ver)
+% return the true sampling time (relative to the average sample time) of
+% each channel of a neuropixels 1.0 or 2.0 probe. 
 
 nCh = 384;
 sampShifts = zeros(nCh, 1);
@@ -21,5 +23,7 @@ for n = 1:nADC
     sampShifts(startChan(n):2:startChan(n)+2*nChPerADC-1) = 1:nChPerADC;
 end
 
+% here just centering the shift amount (arbitrary) and returning in units
+% of samples
 sampShifts = (sampShifts-nChPerADC/2)/nChPerADC;
     
